@@ -3,24 +3,25 @@ import "../css/BinaryNodeTreeApp.css";
 import BinaryTreeNode from "../classes/BinaryTreeNode";
 import BinaryTreeLevel from "./BinaryTreeLevel";
 
+const INITIAL_STATE = {
+  insertKey: "",
+  insertValue: "",
+  find: "",
+  remove: "",
+  bTree: new BinaryTreeNode(),
+  operation_time: 0,
+  activateArrows: true
+};
 /*
-* Each node in the tree stores an element and can have at most two child nodes.
-* The tree does not contain any duplicate values.
-* Elements in a node's left subtree are strictly smaller than the node's element.
-* Elements in a node's right subtree are strictly greater than the node's element.
+* Каждый узел в дереве может иметь максимум двух детей
+* Все значения дерева уникальны
+* Элементы слева всех ниже родительского элемента
+* элементы справа всегда выше родительского элемента
 */
 class BinaryNodeTreeApp extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      insertKey: "",
-      insertValue: "",
-      find: "",
-      remove: "",
-      bTree: new BinaryTreeNode(),
-      operation_time: 0,
-      activateArrows: true
-    };
+    this.state = INITIAL_STATE;
     this.aux_timer = 0;
     this.onChangeInsertKey = this.onChangeInsertKey.bind(this);
     this.onChangeInsertValue = this.onChangeInsertValue.bind(this);
@@ -77,13 +78,14 @@ class BinaryNodeTreeApp extends Component {
     this.initTimer();
     if (this.state.bTree !== null) {
       this.state.bTree.clear();
+      this.state = INITIAL_STATE;
       this.forceUpdate();
     }
     this.finishTimer();
   }
 
   onChangeInsertKey(e) {
-    const insertKey = parseInt(e.target.value, 10);
+    const insertKey = +e.target.value;
     if (!isNaN(insertKey)) {
       this.setState({
         insertKey
